@@ -1,0 +1,33 @@
+doc_a,doc_b,human_similarity,expected_category,notes
+
+HR-001,HR-002,95,Near_Duplicate,Same employee onboarding workflow with regional differences
+HR-001,HR-004,90,Near_Duplicate,Same onboarding process newer version
+HR-002,HR-005,90,Near_Duplicate,Same onboarding process newer version
+HR-004,HR-005,95,Near_Duplicate,Same onboarding workflow different region
+
+FIN-001,FIN-005,95,Near_Duplicate,Same reimbursement policy newer version
+FIN-002,FIN-006,90,Near_Duplicate,Same payroll workflow adapted for US region
+
+ENG-001,ENG-006,95,Near_Duplicate,Same deployment SOP newer version
+OPS-001,OPS-006,95,Near_Duplicate,Same client onboarding process newer version
+
+HR-003,HR-006,85,Highly_Similar,Remote work policies with regional differences
+ENG-008,OPS-008,80,Highly_Similar,Business continuity and disaster recovery overlap
+
+ENG-002,OPS-002,65,Moderately_Similar,Incident response and escalation overlap
+LEG-002,OPS-003,60,Moderately_Similar,Compliance and audit overlap
+LEG-002,ENG-003,55,Moderately_Similar,Security and compliance overlap
+LEG-001,OPS-007,50,Moderately_Similar,Both involve vendor management
+LEG-005,OPS-007,50,Moderately_Similar,Both vendor-related documents
+LEG-006,HR-007,50,Moderately_Similar,Employee governance and performance overlap
+FIN-001,FIN-007,40,Moderately_Similar,Both employee expense related documents
+LEG-003,OPS-001,40,Moderately_Similar,Client-related operational documents
+
+HR-001,OPS-001,30,Slightly_Related,Both onboarding processes but different business purpose
+HR-002,OPS-006,30,Slightly_Related,Both onboarding related but different stakeholders
+ENG-007,ENG-001,35,Slightly_Related,Different engineering processes
+
+OPS-003,FIN-003,15,Unrelated,Audit and budgeting only loosely connected
+HR-003,ENG-003,10,Unrelated,Remote work policy versus API security
+LEG-001,ENG-002,5,Unrelated,Legal contract versus engineering incident response
+FIN-003,ENG-001,5,Unrelated,Budget report versus deployment SOP

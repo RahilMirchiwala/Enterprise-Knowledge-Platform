@@ -1,0 +1,36 @@
+doc_id,file_name,department,region,business_function,document_type
+
+HR-001,India_Employee_Onboarding_SOP,HR,India,Employee_Onboarding,SOP
+HR-002,UK_Employee_Onboarding_SOP,HR,UK,Employee Onboarding,SOP
+HR-003,Remote_Work_Policy,HR,Global,Remote Work,Policy
+HR-004,India_Employee_Onboarding_SOP_v2_0,HR,India,Employee Onboarding,SOP
+HR-005,UK_Employee_Onboarding_SOP_v2_0,HR,UK,Employee Onboarding,SOP
+HR-006,US_Remote_Work_Policy,HR,US,Remote Work,Policy
+HR-007,Performance_Review_Policy,HR,Global,Performance Management,Policy
+
+FIN-001,Expense_Reimbursement_Policy,Finance,Global,Reimbursement,Policy
+FIN-002,Payroll_Processing_SOP,Finance,Global,Payroll,SOP
+FIN-003,Quarterly_Budget_Report,Finance,Global,Budgeting,Report
+FIN-005,Expense_Reimbursement_Policy_v2_0,Finance,Global,Reimbursement,Policy
+FIN-006,US_Payroll_Processing_SOP,Finance,US,Payroll,SOP
+FIN-007,Travel_and_Entertainment_Policy,Finance,Global,Employee Expenses,Policy
+
+ENG-001,Production_Deployment_SOP,Engineering,Global,Deployment,SOP
+ENG-002,Incident_Response_Procedure,Engineering,Global,Incident Management,Procedure
+ENG-003,API_Security_Guidelines,Engineering,Global,Security,Guidelines
+ENG-006,Production_Deployment_SOP_v2_0,Engineering,Global,Deployment,SOP
+ENG-007,Code_Review_Guidelines,Engineering,Global,Code Review,Guidelines
+ENG-008,Disaster_Recovery_Plan,Engineering,Global,Disaster Recovery,Plan
+
+LEG-001,Vendor_NDA,Legal,Global,Vendor Management,Contract
+LEG-002,Data_Privacy_Policy,Legal,Global,Compliance,Policy,
+LEG-003,Service_Agreement_Template,Legal,Global,Client Management,Contract
+LEG-005,US_Vendor_NDA,Legal,US,Vendor Management,Contract
+LEG-006,Employee_IP_Assignment_Agreement,Legal,Global,Employment Compliance,Agreement
+
+OPS-001,Client_Onboarding_Process,Operations,Global,Client Onboarding,SOP
+OPS-002,Escalation_Matrix,Operations,Global,Escalation Management,Procedure
+OPS-003,Internal_Audit_Checklist,Operations,Global,Audit,Checklist
+OPS-006,Client_Onboarding_Process_v2_0,Operations,Global,Client Onboarding,Process
+OPS-007,Vendor_Management_Policy,Operations,Global,Vendor Management,Policy
+OPS-008,Business_Continuity_Plan,Operations,Global,Business Continuity,Plan
