@@ -1,10 +1,15 @@
+import os
 import json
 import pandas as pd # type: ignore
 from sklearn.feature_extraction.text import TfidfVectorizer # type: ignore
 from sklearn.metrics.pairwise import cosine_similarity # type: ignore
 from itertools import combinations
 
-with open("documents.json", "r", encoding="utf-8") as f:
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+DOCS_JSON = os.path.join(BASE_DIR, "documents.json")
+EVAL_CSV  = os.path.join(BASE_DIR, "evaluation_dataset.csv")
+
+with open(DOCS_JSON, "r", encoding="utf-8") as f:
   documents = json.load(f)
 
 doc_ids = list(documents.keys())
@@ -41,7 +46,7 @@ import csv
 
 # ── Load Human Labels from CSV ──
 human_labels = []
-with open("documents\evaluation_dataset.csv", "r") as f:
+with open(EVAL_CSV, "r") as f:
     reader = csv.DictReader(f)
     for row in reader:
         if row["doc_a"]:  # empty rows skip karo
@@ -68,3 +73,7 @@ for doc_a, doc_b, human_score, category in human_labels:
         gap = tfidf_score - human_score
         flag = "FP" if gap > 20 else ("FN" if gap < -20 else "TP")
         print(f"{doc_a:<10} {doc_b:<10} {human_score:>8} {tfidf_score:>8} {gap:>+8.1f}  {flag}")
+
+df.to_csv("TF_IDF_results.csv", index=False)
+print("\nResults saved to TF_IDF_results.csv")
+

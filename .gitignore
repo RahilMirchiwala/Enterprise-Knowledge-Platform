@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 .vscode/
 .venv/
+sbert_results.csv
+TF_IDF_results.csv
