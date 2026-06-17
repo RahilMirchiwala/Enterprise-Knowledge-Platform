@@ -5,3 +5,4 @@ __pycache__/
 .venv/
 sbert_results.csv
 TF_IDF_results.csv
+*.pkl
