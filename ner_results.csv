@@ -1,0 +1,31 @@
+doc_id,departments,regions,doc_types,hr_entities
+ENG-001_Production_Deployment_SOP,Engineering,,"Procedure, SOP",
+ENG-002_Incident_Response_Procedure,Engineering,,Procedure,
+ENG-003_API_Security_Guidelines,Engineering,,Guidelines,
+ENG-006_Production_Deployment_SOP_v2_0,Engineering,,SOP,
+ENG-007_Code_Review_Guidelines,Engineering,,Guidelines,
+ENG-008_Disaster_Recovery_Plan,"Engineering, Legal",,Plan,
+FIN-001_Expense_Reimbursement_Policy,Finance,,Policy,
+FIN-002_Payroll_Processing_SOP,"HR, Finance",India,SOP,"PF, ESIC, TDS"
+FIN-003_Quarterly_Budget_Report,"HR, Finance",,Report,
+FIN-005_Expense_Reimbursement_Policy_v2_0,Finance,,Policy,
+FIN-006_US_Payroll_Processing_SOP,"HR, Finance",US,SOP,
+FIN-007_Travel_and_Entertainment_Policy,"Legal, Finance",,"Policy, Guidelines",
+HR-001_India_Employee_Onboarding_SOP,HR,India,"Plan, Procedure, Checklist, SOP","PF, ESIC"
+HR-002_UK_Employee_Onboarding_SOP,"HR, Legal",UK,SOP,"HMRC, PAYE"
+HR-003_Remote_Work_Policy,HR,,"Policy, Report",
+HR-004_India_Employee_Onboarding_SOP_v2_0,HR,India,"Plan, Checklist, SOP",
+HR-005_UK_Employee_Onboarding_SOP_v2_0,"HR, Legal",UK,SOP,
+HR-006_US_Remote_Work_Policy,"HR, Finance",US,Policy,
+HR-007_Performance_Review_Policy,HR,,Policy,
+LEG-001_Vendor_NDA,,,"NDA, Agreement",
+LEG-002_Data_Privacy_Policy,Legal,"India, UK","Policy, Contract",
+LEG-003_Service_Agreement_Template,Legal,,Agreement,
+LEG-005_US_Vendor_NDA,Legal,US,"NDA, Agreement",
+LEG-006_Employee_IP_Assignment_Agreement,Legal,,Agreement,
+OPS-001_Client_Onboarding_Process,Operations,,,
+OPS-002_Escalation_Matrix,"Operations, Legal, HR, Finance, Engineering",,,
+OPS-003_Internal_Audit_Checklist,"HR, Operations, Finance",,"Policy, Checklist","PF, ESIC, TDS"
+OPS-006_Client_Onboarding_Process_v2_0,Operations,,Checklist,
+OPS-007_Vendor_Management_Policy,"Operations, Finance",,"Policy, NDA, Agreement",
+OPS-008_Business_Continuity_Plan,"Operations, Legal, HR, Finance, Engineering",,Plan,
