@@ -13,14 +13,21 @@ with open(DOCS_JSON, "r", encoding="utf-8") as f:
 doc_ids = list(documents.keys())
 doc_texts = list(documents.values())
 
-print("Loading SBERT model...")
-model = SentenceTransformer("all-MiniLM-L6-v2")
-embeddings = model.encode(doc_texts)
-print("SBERT ready!")
+model = None
+embeddings = None
+
+def get_model():
+    global model, embeddings
+    if model is None:
+        print("Loading SBERT...")
+        model = SentenceTransformer("all-MiniLM-L6-v2")
+        embeddings = model.encode(doc_texts)
+    return model, embeddings
 
 def search(query: str, top_k: int = 3):
-    query_vector = model.encode([query])
-    scores = cosine_similarity(query_vector, embeddings)[0]
+    m, emb = get_model()
+    query_vector = m.encode([query])
+    scores = cosine_similarity(query_vector, emb)[0]
     top_indices = np.argsort(scores)[::-1][:top_k]
     
     results = []

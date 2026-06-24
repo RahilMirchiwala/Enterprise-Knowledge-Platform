@@ -2,8 +2,6 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 from layers.layer5_llm import ask
 from layers.layer4_search import search
-from layers.layer2_classify import classify
-from layers.layer3_ner import extract
 
 load_dotenv()
 
@@ -15,7 +13,14 @@ app = FastAPI(
 
 @app.get("/")
 def home():
-    return {"message": "Welcome to NovaBridge Knowledge Platform!"}
+    return {
+        "message": "Welcome to NovaBridge Knowledge Platform!",
+        "endpoints": {
+            "/search": "SBERT Document Search",
+            "/ask": "Groq RAG Q&A",
+            "/docs": "API Documentation"
+        }
+    }
 
 @app.get("/search")
 def search_docs(query: str, top_k: int = 3):
@@ -25,14 +30,4 @@ def search_docs(query: str, top_k: int = 3):
 @app.get("/ask")
 def ask_question(query: str):
     result = ask(query)
-    return result
-
-@app.get("/classify")
-def classify_doc(text: str):
-    result = classify(text)
-    return result
-
-@app.get("/extract")
-def extract_entities(text: str):
-    result = extract(text)
     return result
