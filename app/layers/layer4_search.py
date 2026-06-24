@@ -1,7 +1,7 @@
 import os
 import json
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -13,16 +13,9 @@ with open(DOCS_JSON, "r", encoding="utf-8") as f:
 doc_ids = list(documents.keys())
 doc_texts = list(documents.values())
 
-model = None
-embeddings = None
-
-def get_model():
-    global model, embeddings
-    if model is None:
-        print("Loading SBERT...")
-        model = SentenceTransformer("all-MiniLM-L6-v2")
-        embeddings = model.encode(doc_texts)
-    return model, embeddings
+# TF-IDF — lightweight!
+vectorizer = TfidfVectorizer(stop_words="english", max_features=5000)
+tfidf_matrix = vectorizer.fit_transform(doc_texts)
 
 def search(query: str, top_k: int = 3):
     m, emb = get_model()
