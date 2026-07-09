@@ -97,7 +97,6 @@ def extract(text: str):
         elif ent.label_ == "COMPLIANCE":
             compliance.add(ent.text)
 
-    # set → list (JSON serializable)
     return {
         "departments": list(departments),
         "regions": list(regions),

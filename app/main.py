@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from dotenv import load_dotenv
 from layers.layer5_llm import ask
 from layers.layer4_search import search
@@ -15,10 +15,6 @@ app = FastAPI(
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/ui")
-def ui():
-    return FileResponse("static/index.html")
-
 @app.get("/")
 def home():
     return {
@@ -26,16 +22,33 @@ def home():
         "endpoints": {
             "/search": "SBERT Document Search",
             "/ask": "Groq RAG Q&A",
+            "/ui": "Web Interface",
             "/docs": "API Documentation"
         }
     }
 
 @app.get("/search")
 def search_docs(query: str, top_k: int = 3):
-    results = search(query, top_k)
-    return {"query": query, "results": results}
+    try:
+        results = search(query, top_k)
+        return {"query": query, "results": results}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Search failed: {str(e)}"
+        )
 
 @app.get("/ask")
 def ask_question(query: str):
-    result = ask(query)
-    return result
+    try:
+        result = ask(query)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Question answering failed: {str(e)}"
+        )
+
+@app.get("/ui")
+def ui():
+    return FileResponse("static/index.html")

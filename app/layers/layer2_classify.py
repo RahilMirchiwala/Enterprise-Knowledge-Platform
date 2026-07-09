@@ -3,7 +3,6 @@ import pickle
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Models load karo
 with open(os.path.join(BASE_DIR, "dept_model.pkl"), "rb") as f:
     dept_model = pickle.load(f)
 
