@@ -1,12 +1,13 @@
 fastapi
 uvicorn
-python-docx
 scikit-learn
 xgboost
 spacy
 sentence-transformers
+chromadb
 groq
 python-dotenv
-pandas
 numpy
+pandas
+python-docx
 aiofiles
