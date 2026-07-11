@@ -6,318 +6,127 @@
     <title>Enterprise Knowledge Intelligence Platform</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #0f1117;
-            color: #e0e0e0;
-            min-height: 100vh;
-        }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f1117; color: #e0e0e0; min-height: 100vh; }
 
-        /* Header */
         .header {
             background: linear-gradient(135deg, #1a1a2e, #16213e);
-            padding: 24px 40px;
-            border-bottom: 1px solid #2d2d44;
-            display: flex;
-            align-items: center;
-            gap: 16px;
+            padding: 24px 40px; border-bottom: 1px solid #2d2d44;
+            display: flex; align-items: center; gap: 16px;
         }
-
         .header .logo {
-            width: 42px;
-            height: 42px;
+            width: 42px; height: 42px;
             background: linear-gradient(135deg, #6c63ff, #3ec6e0);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
+            border-radius: 10px; display: flex; align-items: center;
+            justify-content: center; font-size: 20px;
         }
-
-        .header h1 {
-            font-size: 20px;
-            font-weight: 600;
-            color: #fff;
-        }
-
-        .header p {
-            font-size: 13px;
-            color: #888;
-            margin-top: 2px;
-        }
-
+        .header h1 { font-size: 20px; font-weight: 600; color: #fff; }
+        .header p { font-size: 13px; color: #888; margin-top: 2px; }
         .badge {
-            margin-left: auto;
-            background: #1e3a2f;
-            color: #4caf88;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            border: 1px solid #2d5a42;
+            margin-left: auto; background: #1e3a2f; color: #4caf88;
+            padding: 4px 12px; border-radius: 20px; font-size: 12px; border: 1px solid #2d5a42;
         }
 
-        /* Main */
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
 
-        /* Search Box */
         .search-section {
-            background: #1a1a2e;
-            border: 1px solid #2d2d44;
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 32px;
+            background: #1a1a2e; border: 1px solid #2d2d44;
+            border-radius: 16px; padding: 32px; margin-bottom: 32px;
         }
+        .search-section h2 { font-size: 18px; color: #fff; margin-bottom: 8px; }
+        .search-section p { font-size: 13px; color: #666; margin-bottom: 20px; }
 
-        .search-section h2 {
-            font-size: 18px;
-            color: #fff;
-            margin-bottom: 8px;
+        .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+        .tab {
+            padding: 8px 18px; border-radius: 8px; font-size: 13px; cursor: pointer;
+            border: 1px solid #2d2d44; background: transparent; color: #888; transition: all 0.2s;
         }
+        .tab.active { background: #6c63ff22; border-color: #6c63ff; color: #6c63ff; }
 
-        .search-section p {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .search-box {
-            display: flex;
-            gap: 12px;
-        }
-
+        .search-box { display: flex; gap: 12px; }
         .search-box input {
-            flex: 1;
-            background: #0f1117;
-            border: 1px solid #2d2d44;
-            border-radius: 10px;
-            padding: 14px 18px;
-            color: #e0e0e0;
-            font-size: 15px;
-            outline: none;
-            transition: border-color 0.2s;
+            flex: 1; background: #0f1117; border: 1px solid #2d2d44;
+            border-radius: 10px; padding: 14px 18px; color: #e0e0e0;
+            font-size: 15px; outline: none; transition: border-color 0.2s;
         }
+        .search-box input:focus { border-color: #6c63ff; }
+        .search-box input::placeholder { color: #444; }
 
-        .search-box input:focus {
-            border-color: #6c63ff;
+        select {
+            width: 100%; background: #0f1117; border: 1px solid #2d2d44;
+            border-radius: 10px; padding: 14px 18px; color: #e0e0e0;
+            font-size: 15px; outline: none; cursor: pointer;
+            margin-bottom: 12px;
         }
-
-        .search-box input::placeholder {
-            color: #444;
-        }
+        select:focus { border-color: #6c63ff; }
 
         .btn {
             background: linear-gradient(135deg, #6c63ff, #3ec6e0);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            white-space: nowrap;
+            color: white; border: none; padding: 14px 28px;
+            border-radius: 10px; font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: opacity 0.2s; white-space: nowrap;
         }
-
         .btn:hover { opacity: 0.85; }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .tab {
-            padding: 8px 18px;
-            border-radius: 8px;
-            font-size: 13px;
-            cursor: pointer;
-            border: 1px solid #2d2d44;
-            background: transparent;
-            color: #888;
-            transition: all 0.2s;
-        }
-
-        .tab.active {
-            background: #6c63ff22;
-            border-color: #6c63ff;
-            color: #6c63ff;
-        }
-
-        /* Loading */
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-
+        .loading { display: none; text-align: center; padding: 40px; color: #666; }
         .spinner {
-            width: 36px;
-            height: 36px;
-            border: 3px solid #2d2d44;
-            border-top-color: #6c63ff;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 16px;
+            width: 36px; height: 36px; border: 3px solid #2d2d44;
+            border-top-color: #6c63ff; border-radius: 50%;
+            animation: spin 0.8s linear infinite; margin: 0 auto 16px;
         }
-
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Answer Card */
         .answer-card {
-            display: none;
-            background: #1a1a2e;
-            border: 1px solid #2d2d44;
-            border-radius: 16px;
-            padding: 28px;
-            margin-bottom: 24px;
+            display: none; background: #1a1a2e; border: 1px solid #2d2d44;
+            border-radius: 16px; padding: 28px; margin-bottom: 24px;
         }
-
         .answer-card .label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #6c63ff;
-            margin-bottom: 12px;
+            font-size: 11px; text-transform: uppercase;
+            letter-spacing: 1px; color: #6c63ff; margin-bottom: 12px;
         }
+        .answer-card .answer-text { font-size: 15px; line-height: 1.7; color: #ccc; white-space: pre-wrap; }
 
-        .answer-card .answer-text {
-            font-size: 15px;
-            line-height: 1.7;
-            color: #ccc;
-            white-space: pre-wrap;
-        }
+        .sources { margin-top: 20px; padding-top: 16px; border-top: 1px solid #2d2d44; }
+        .sources .label { font-size: 11px; color: #666; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .source-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip { background: #0f1117; border: 1px solid #2d2d44; border-radius: 6px; padding: 5px 12px; font-size: 12px; color: #888; }
 
-        /* Sources */
-        .sources {
-            margin-top: 20px;
-            padding-top: 16px;
-            border-top: 1px solid #2d2d44;
-        }
-
-        .sources .label {
-            font-size: 11px;
-            color: #666;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .source-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .chip {
-            background: #0f1117;
-            border: 1px solid #2d2d44;
-            border-radius: 6px;
-            padding: 5px 12px;
-            font-size: 12px;
-            color: #888;
-        }
-
-        /* Search Results */
-        .results-grid {
-            display: none;
-            flex-direction: column;
-            gap: 14px;
-        }
-
+        .results-grid { display: none; flex-direction: column; gap: 14px; }
         .result-card {
-            background: #1a1a2e;
-            border: 1px solid #2d2d44;
-            border-radius: 12px;
-            padding: 20px;
-            transition: border-color 0.2s;
+            background: #1a1a2e; border: 1px solid #2d2d44;
+            border-radius: 12px; padding: 20px; transition: border-color 0.2s;
         }
-
         .result-card:hover { border-color: #6c63ff55; }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .result-id {
-            font-size: 13px;
-            font-weight: 600;
-            color: #6c63ff;
-        }
-
-        .score-badge {
-            font-size: 12px;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-
+        .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .result-id { font-size: 13px; font-weight: 600; color: #6c63ff; }
+        .score-badge { font-size: 12px; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
         .score-high { background: #1e3a2f; color: #4caf88; border: 1px solid #2d5a42; }
         .score-mid  { background: #2d2a1e; color: #c8a84b; border: 1px solid #4a3f1a; }
         .score-low  { background: #2a1e1e; color: #c84b4b; border: 1px solid #4a1a1a; }
-
         .result-text {
-            font-size: 13px;
-            color: #666;
-            line-height: 1.6;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-size: 13px; color: #666; line-height: 1.6;
+            display: -webkit-box; -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical; overflow: hidden;
         }
 
-        /* Error */
         .error {
-            display: none;
-            background: #2a1e1e;
-            border: 1px solid #4a1a1a;
-            border-radius: 12px;
-            padding: 16px 20px;
-            color: #c84b4b;
-            font-size: 14px;
+            display: none; background: #2a1e1e; border: 1px solid #4a1a1a;
+            border-radius: 12px; padding: 16px 20px; color: #c84b4b; font-size: 14px;
         }
 
-        /* Examples */
-        .examples {
-            margin-top: 16px;
-        }
-
-        .examples p {
-            font-size: 12px;
-            color: #555;
-            margin-bottom: 8px;
-        }
-
-        .example-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
+        .examples { margin-top: 16px; }
+        .examples p { font-size: 12px; color: #555; margin-bottom: 8px; }
+        .example-chips { display: flex; flex-wrap: wrap; gap: 8px; }
         .example-chip {
-            background: #0f1117;
-            border: 1px solid #2d2d44;
-            border-radius: 6px;
-            padding: 6px 12px;
-            font-size: 12px;
-            color: #666;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: #0f1117; border: 1px solid #2d2d44; border-radius: 6px;
+            padding: 6px 12px; font-size: 12px; color: #666; cursor: pointer; transition: all 0.2s;
         }
+        .example-chip:hover { border-color: #6c63ff; color: #6c63ff; }
 
-        .example-chip:hover {
-            border-color: #6c63ff;
-            color: #6c63ff;
+        .dup-summary {
+            background: #1a1a2e; border: 1px solid #2d2d44;
+            border-radius: 12px; padding: 16px 20px; margin-bottom: 14px;
+            font-size: 13px; color: #888;
         }
     </style>
 </head>
@@ -327,29 +136,41 @@
     <div class="logo">🧠</div>
     <div>
         <h1>Enterprise Knowledge Intelligence Platform</h1>
-        <p>NovaBridge Consulting · Powered by TF-IDF + Groq LLaMA</p>
+        <p>NovaBridge Consulting · Powered by SBERT + ChromaDB + Groq LLaMA</p>
     </div>
     <div class="badge">● Live</div>
 </div>
 
 <div class="container">
 
-    <!-- Search Section -->
     <div class="search-section">
         <h2>Search Knowledge Base</h2>
-        <p>Ask a question or search across 30 business documents</p>
+        <p>Ask a question, search documents, or find duplicates across 30 business documents</p>
 
         <div class="tabs">
             <button class="tab active" onclick="setMode('ask')">💬 Ask AI</button>
             <button class="tab" onclick="setMode('search')">🔍 Search Docs</button>
+            <button class="tab" onclick="setMode('duplicates')">📋 Find Duplicates</button>
         </div>
 
-        <div class="search-box">
+        <!-- Text input — Ask AI + Search Docs -->
+        <div id="textInputBox" class="search-box">
             <input type="text" id="queryInput" placeholder="e.g. What is the remote work policy?" />
             <button class="btn" onclick="runQuery()" id="searchBtn">Ask</button>
         </div>
 
-        <div class="examples">
+        <!-- Dropdown — Find Duplicates -->
+        <div id="dupInputBox" style="display:none;">
+            <select id="docSelect">
+                <option value="">Select a document to find duplicates...</option>
+            </select>
+            <button class="btn" onclick="runQuery()" id="dupBtn" style="width:100%;">
+                Find Duplicates
+            </button>
+        </div>
+
+        <!-- Example chips — only for ask/search -->
+        <div class="examples" id="examplesSection">
             <p>Try these:</p>
             <div class="example-chips">
                 <span class="example-chip" onclick="setQuery('What is the remote work policy?')">Remote work policy</span>
@@ -364,7 +185,7 @@
     <!-- Loading -->
     <div class="loading" id="loading">
         <div class="spinner"></div>
-        <p>Searching knowledge base...</p>
+        <p id="loadingMsg">Searching knowledge base...</p>
     </div>
 
     <!-- Error -->
@@ -380,7 +201,7 @@
         </div>
     </div>
 
-    <!-- Search Results -->
+    <!-- Search / Duplicate Results -->
     <div class="results-grid" id="resultsGrid"></div>
 
 </div>
@@ -389,14 +210,45 @@
     const API = "https://enterprise-knowledge-platform.onrender.com";
     let mode = "ask";
 
+    // Load documents for duplicate dropdown
+    async function loadDocuments() {
+        try {
+            const res = await fetch(`${API}/documents`);
+            const data = await res.json();
+            const select = document.getElementById("docSelect");
+            data.documents.forEach(doc => {
+                const option = document.createElement("option");
+                option.value = doc;
+                option.textContent = doc.replace(/_/g, " ");
+                select.appendChild(option);
+            });
+        } catch (e) {
+            console.error("Failed to load documents:", e);
+        }
+    }
+
     function setMode(m) {
         mode = m;
+        // Update tab styles
         document.querySelectorAll(".tab").forEach((t, i) => {
-            t.classList.toggle("active", (i === 0 && m === "ask") || (i === 1 && m === "search"));
+            t.classList.toggle("active",
+                (i === 0 && m === "ask") ||
+                (i === 1 && m === "search") ||
+                (i === 2 && m === "duplicates")
+            );
         });
+
+        // Show/hide input boxes
+        const isText = m === "ask" || m === "search";
+        document.getElementById("textInputBox").style.display = isText ? "flex" : "none";
+        document.getElementById("dupInputBox").style.display = m === "duplicates" ? "block" : "none";
+        document.getElementById("examplesSection").style.display = isText ? "block" : "none";
+
+        // Update button text
         document.getElementById("searchBtn").textContent = m === "ask" ? "Ask" : "Search";
         document.getElementById("queryInput").placeholder =
             m === "ask" ? "e.g. What is the remote work policy?" : "e.g. remote work policy";
+
         hideAll();
     }
 
@@ -420,35 +272,21 @@
     }
 
     async function runQuery() {
-        const query = document.getElementById("queryInput").value.trim();
-        if (!query) return;
-
         hideAll();
-        document.getElementById("loading").style.display = "block";
-        document.getElementById("searchBtn").disabled = true;
 
-        try {
-            if (mode === "ask") {
-                const res = await fetch(`${API}/ask?query=${encodeURIComponent(query)}`);
-                if (!res.ok) throw new Error("API error " + res.status);
-                const data = await res.json();
+        if (mode === "duplicates") {
+            // Duplicate Detection
+            const docId = document.getElementById("docSelect").value;
+            if (!docId) { showError("Please select a document first!"); return; }
 
-                hideAll();
-                document.getElementById("answerText").textContent = data.answer;
+            document.getElementById("loading").style.display = "block";
+            document.getElementById("loadingMsg").textContent = "Finding similar documents...";
+            document.getElementById("dupBtn").disabled = true;
 
-                const chips = document.getElementById("sourceChips");
-                chips.innerHTML = "";
-                data.sources.forEach(s => {
-                    const chip = document.createElement("span");
-                    chip.className = "chip";
-                    chip.textContent = s.replace(/_/g, " ").replace(".docx", "");
-                    chips.appendChild(chip);
-                });
-
-                document.getElementById("answerCard").style.display = "block";
-
-            } else {
-                const res = await fetch(`${API}/search?query=${encodeURIComponent(query)}&top_k=5`);
+            try {
+                const res = await fetch(
+                    `${API}/detect-duplicates?doc_id=${encodeURIComponent(docId)}&threshold=0.4&top_k=5`
+                );
                 if (!res.ok) throw new Error("API error " + res.status);
                 const data = await res.json();
 
@@ -456,32 +294,111 @@
                 const grid = document.getElementById("resultsGrid");
                 grid.innerHTML = "";
 
-                data.results.forEach(r => {
-                    const scoreClass = r.score > 40 ? "score-high" : r.score > 20 ? "score-mid" : "score-low";
-                    const card = document.createElement("div");
-                    card.className = "result-card";
-                    card.innerHTML = `
-                        <div class="result-header">
-                            <span class="result-id">${r.doc_id.replace(/_/g, " ")}</span>
-                            <span class="score-badge ${scoreClass}">${r.score}% match</span>
-                        </div>
-                        <div class="result-text">${r.text}</div>
-                    `;
-                    grid.appendChild(card);
-                });
+                // Summary
+                const summary = document.createElement("div");
+                summary.className = "dup-summary";
+                summary.innerHTML = `Found <strong style="color:#6c63ff">${data.duplicates_found}</strong> similar document(s) for <strong style="color:#fff">${data.source_document.replace(/_/g, " ")}</strong>`;
+                grid.appendChild(summary);
+
+                if (data.duplicates_found === 0) {
+                    const empty = document.createElement("div");
+                    empty.className = "dup-summary";
+                    empty.textContent = "No similar documents found above 40% threshold.";
+                    grid.appendChild(empty);
+                } else {
+                    data.results.forEach(r => {
+                        const scoreClass = r.similarity_score >= 70 ? "score-high" :
+                                          r.similarity_score >= 40 ? "score-mid" : "score-low";
+                        const card = document.createElement("div");
+                        card.className = "result-card";
+                        card.innerHTML = `
+                            <div class="result-header">
+                                <span class="result-id">${r.doc_id.replace(/_/g, " ")}</span>
+                                <span class="score-badge ${scoreClass}">
+                                    ${r.similarity_score}% · ${r.category}
+                                </span>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+                }
 
                 grid.style.display = "flex";
+            } catch (e) {
+                showError(e.message);
+            } finally {
+                document.getElementById("dupBtn").disabled = false;
             }
-        } catch (e) {
-            showError(e.message);
-        } finally {
-            document.getElementById("searchBtn").disabled = false;
+
+        } else {
+            // Ask AI or Search Docs
+            const query = document.getElementById("queryInput").value.trim();
+            if (!query) return;
+
+            document.getElementById("loading").style.display = "block";
+            document.getElementById("loadingMsg").textContent =
+                mode === "ask" ? "Getting AI answer..." : "Searching knowledge base...";
+            document.getElementById("searchBtn").disabled = true;
+
+            try {
+                if (mode === "ask") {
+                    const res = await fetch(`${API}/ask?query=${encodeURIComponent(query)}`);
+                    if (!res.ok) throw new Error("API error " + res.status);
+                    const data = await res.json();
+
+                    hideAll();
+                    document.getElementById("answerText").textContent = data.answer;
+
+                    const chips = document.getElementById("sourceChips");
+                    chips.innerHTML = "";
+                    data.sources.forEach(s => {
+                        const chip = document.createElement("span");
+                        chip.className = "chip";
+                        chip.textContent = s.replace(/_/g, " ");
+                        chips.appendChild(chip);
+                    });
+
+                    document.getElementById("answerCard").style.display = "block";
+
+                } else {
+                    const res = await fetch(`${API}/search?query=${encodeURIComponent(query)}&top_k=5`);
+                    if (!res.ok) throw new Error("API error " + res.status);
+                    const data = await res.json();
+
+                    hideAll();
+                    const grid = document.getElementById("resultsGrid");
+                    grid.innerHTML = "";
+
+                    data.results.forEach(r => {
+                        const scoreClass = r.score > 60 ? "score-high" : r.score > 35 ? "score-mid" : "score-low";
+                        const card = document.createElement("div");
+                        card.className = "result-card";
+                        card.innerHTML = `
+                            <div class="result-header">
+                                <span class="result-id">${r.doc_id.replace(/_/g, " ")}</span>
+                                <span class="score-badge ${scoreClass}">${r.score}% match</span>
+                            </div>
+                            <div class="result-text">${r.text}</div>
+                        `;
+                        grid.appendChild(card);
+                    });
+
+                    grid.style.display = "flex";
+                }
+            } catch (e) {
+                showError(e.message);
+            } finally {
+                document.getElementById("searchBtn").disabled = false;
+            }
         }
     }
 
     document.getElementById("queryInput").addEventListener("keydown", e => {
         if (e.key === "Enter") runQuery();
     });
+
+    // Load documents on page load
+    loadDocuments();
 </script>
 
 </body>

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from dotenv import load_dotenv
 from layers.layer5_llm import ask
-from layers.layer4_search import search
+from layers.layer4_search import search, find_similar, collection
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
@@ -37,6 +37,21 @@ def search_docs(query: str, top_k: int = 3):
             status_code=500,
             detail=f"Search failed: {str(e)}"
         )
+    
+@app.get("/detect-duplicates")
+def detect_duplicates(doc_id: str, threshold: float = 0.4, top_k: int = 5):
+    try:
+        results = find_similar(doc_id, threshold, top_k)
+        return {
+            "source_document": doc_id,
+            "threshold": threshold,
+            "duplicates_found": len(results),
+            "results": results
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Duplicate detection failed: {str(e)}")
 
 @app.get("/ask")
 def ask_question(query: str):
@@ -48,6 +63,17 @@ def ask_question(query: str):
             status_code=500,
             detail=f"Question answering failed: {str(e)}"
         )
+    
+@app.get("/documents")
+def list_documents():
+    try:
+        results = collection.get(include=[])  # sirf IDs chahiye
+        return {
+            "total": len(results["ids"]),
+            "documents": results["ids"]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/ui")
 def ui():
