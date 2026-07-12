@@ -78,3 +78,19 @@ def list_documents():
 @app.get("/ui")
 def ui():
     return FileResponse("static/index.html")
+
+@app.get("/health")
+def health():
+    try:
+        doc_count = collection.count()
+        return {
+            "status": "ok",
+            "model_loaded": True,
+            "documents_indexed": doc_count,
+            "version": "1.0.0"
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Service unhealthy: {str(e)}"
+        )
