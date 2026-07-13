@@ -6,3 +6,4 @@ sbert_results.csv
 TF_IDF_results.csv
 *.pkl
 .env
+app/chroma_db/

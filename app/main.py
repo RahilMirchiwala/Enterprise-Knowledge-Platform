@@ -1,7 +1,11 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
+import tempfile
+import os
 from dotenv import load_dotenv
 from layers.layer5_llm import ask
 from layers.layer4_search import search, find_similar, collection
+from layers.layer1_extract import extract_text
+from layers.layer4_search import search, find_similar, collection, model
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
@@ -93,4 +97,46 @@ def health():
         raise HTTPException(
             status_code=503,
             detail=f"Service unhealthy: {str(e)}"
+        )
+    
+@app.post("/ingest")
+async def ingest_document(file: UploadFile = File(...)):
+    try:
+        if not file.filename.endswith(".docx"):
+            raise HTTPException(
+                status_code=400,
+                detail="Only .docx files are supported"
+            )
+
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp:
+            content = await file.read()
+            tmp.write(content)
+            tmp_path = tmp.name
+
+        text = extract_text(tmp_path)
+
+        doc_id = file.filename.replace(".docx", "").replace(" ", "_")
+
+        embedding = model.encode([text]).tolist()
+
+        collection.add(
+            ids=[doc_id],
+            embeddings=embedding,
+            documents=[text]
+        )
+
+        os.unlink(tmp_path)
+        
+        return {
+            "message": f"Document ingested successfully",
+            "doc_id": doc_id,
+            "text_length": len(text)
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Ingestion failed: {str(e)}"
         )

@@ -1,13 +1,13 @@
 # Experiment 03 — Hybrid Search (TF-IDF + SBERT + Metadata)
 
 **Status:** Complete
-**Result:** 13/25 — SBERT alone (14/25) se better nahi hua
+**Result:** 13/25 — did not outperform SBERT alone (14/25)
 
 ---
 
 ## Goal
 
-Experiment 02 mein SBERT ne 14/25 pairs sahi kiye — but 3 False Positives aaye:
+Experiment 02 showed SBERT getting 14/25 pairs correct but producing 3 False Positives:
 
 ```
 HR-001 ↔ OPS-001  → Human: 30% | SBERT: 62% ⚠️ FP
@@ -15,13 +15,14 @@ OPS-003 ↔ FIN-003 → Human: 15% | SBERT: 53% ⚠️ FP
 HR-003  ↔ ENG-003 → Human: 10% | SBERT: 32% ⚠️ FP
 ```
 
-Hypothesis: TF-IDF aur metadata combine karne se False Positives kam honge.
+Hypothesis: Combining TF-IDF and metadata with SBERT would reduce False Positives.
 
 ---
 
 ## Attempts
 
 ### Attempt 1 — Simple Weighted Average
+
 ```
 Hybrid = (w_tfidf × TF-IDF) + (w_sbert × SBERT)
 ```
@@ -35,15 +36,15 @@ TF-IDF: 0.2 | SBERT: 0.8 → 12/25
 TF-IDF: 1.0 | SBERT: 0.0 →  5/25  ← worst
 ```
 
-**Finding:** Best weight = 0.0 TF-IDF — matlab TF-IDF ka koi faayda nahi!
+**Finding:** Best weight = 0.0 TF-IDF — TF-IDF adds no value.
 
 ---
 
 ### Attempt 2 — Normalized Weighted Average
 
-Problem: TF-IDF scores (0-40%) aur SBERT scores (40-80%) alag ranges mein the.
+Problem: TF-IDF scores (0–40%) and SBERT scores (40–80%) were on different scales.
 
-Fix: Normalize kiya dono ko 0-1 range mein.
+Fix: Normalized both to 0–1 range.
 
 ```
 Formula: normalized = (score - min) / (max - min)
@@ -57,65 +58,62 @@ Grid Search result:
 Best weight → TF-IDF: 0.0 | SBERT: 1.0 → 13/25
 ```
 
-**Finding:** Normalization ne scale fix kiya — but information quality nahi badli!
-TF-IDF ki low-quality scores SBERT ko drag down karti hain.
+**Finding:** Normalization fixed the scale — but not the information quality.
+TF-IDF's low-quality scores still drag SBERT scores down.
 
 ---
 
 ### Attempt 3 — Metadata-Aware Scoring
 
-Idea: Department aur business function information use karo similarity penalize/boost karne ke liye.
+Idea: Use department and business function metadata to penalize or boost similarity scores.
 
 ```
 Same dept + Same function → multiplier 1.0  (no change)
-Same dept only            → multiplier 0.8  (slight penalize)
-Alag dept                 → multiplier 0.7  (penalize)
+Same dept only            → multiplier 0.8  (slight penalty)
+Different dept            → multiplier 0.7  (penalty)
 
 Final Score = SBERT Score × Multiplier
 ```
 
 Grid Search on multipliers:
 ```
-Alag dept multiplier: 0.5 → 11/25
-Alag dept multiplier: 0.6 → 12/25
-Alag dept multiplier: 0.7 → 13/25  ← best
-Alag dept multiplier: 0.8 → 13/25
-Alag dept multiplier: 0.9 → 14/25
-Alag dept multiplier: 1.0 → 14/25  ← same as SBERT alone!
+Different dept multiplier: 0.5 → 11/25
+Different dept multiplier: 0.6 → 12/25
+Different dept multiplier: 0.7 → 13/25  ← best
+Different dept multiplier: 0.8 → 13/25
+Different dept multiplier: 0.9 → 14/25
+Different dept multiplier: 1.0 → 14/25  ← same as SBERT alone!
 ```
 
-**Finding:** Multiplier 1.0 = no change = SBERT alone (14/25)
-Koi bhi penalty lagao — ek pair fix hota hai, doosra toot jaata hai!
+**Finding:** Multiplier 1.0 = no change = SBERT alone (14/25).
+Every penalty applied either fixed one pair while breaking another.
 
 ---
 
 ## Why Hybrid Failed
 
-### Problem 1 — TF-IDF drags SBERT down
+### Problem 1 — TF-IDF Drags SBERT Down
 ```
-TF-IDF → word frequency → low quality information
-SBERT  → semantic meaning → high quality information
+TF-IDF → word frequency → low quality signal
+SBERT  → semantic meaning → high quality signal
 
-Mix karne se SBERT ka accurate score
-TF-IDF ke galat score se contaminate ho jaata hai!
-
-Normalization sirf scale fix karta hai
-Underlying quality nahi badlti.
+Mixing them contaminates SBERT's accurate scores with TF-IDF's noise.
+Normalization fixes scale — it does not fix information quality.
 ```
 
-### Problem 2 — Fixed multiplier flexible nahi hai
+### Problem 2 — Fixed Multiplier Is Not Flexible Enough
 ```
 ENG-008 ↔ OPS-008
 Disaster Recovery vs Business Continuity
-Alag dept — but concepts closely related!
-Human: 80% | Multiplier 0.7 → 39% ❌ bahut kam!
+Different dept — but concepts are closely related!
+Human: 80% | Multiplier 0.7 → 39% ❌ too low!
 
 HR-001 ↔ OPS-001
 Employee Onboarding vs Client Onboarding
-Alag dept — concepts alag!
-Human: 30% | Multiplier 0.7 → 43% ⚠️ abhi bhi zyada
+Different dept — concepts are genuinely different!
+Human: 30% | Multiplier 0.7 → 43% ⚠️ still too high
 
-Ek multiplier dono ko satisfy nahi kar sakta!
+One multiplier cannot satisfy both cases.
 ```
 
 ---
@@ -128,37 +126,33 @@ Ek multiplier dono ko satisfy nahi kar sakta!
 | 02 | SBERT | 14/25 | 8 | 3 |
 | 03 | Hybrid (best attempt) | 13/25 | 9 | 3 |
 
-**Winner: SBERT alone — Experiment 02** 🏆
+**Winner: SBERT alone — Experiment 02**
 
 ---
 
-## My Observation
+## Key Finding
 
-> Maine Hybrid try kiya — normalize bhi kiya, weights bhi tune kiye, metadata multipliers bhi lagaye — phir bhi SBERT alone se better result nahi aaya.
->
-> Root cause: TF-IDF ki information quality hi kam hai. Use kisi bhi tarah mix karo — SBERT ka score girata hai, badhta nahi.
->
-> Metadata multipliers ka problem ye tha ki ek fixed number alag alag document pairs ke liye alag behave karta tha — ENG-008 vs OPS-008 (related concepts, alag dept) aur HR-001 vs OPS-001 (unrelated concepts, alag dept) dono pe same multiplier kaam nahi karta.
+> Combining a weak signal (TF-IDF) with a strong signal (SBERT) degrades
+> the strong signal. The best grid search weight was 0% TF-IDF + 100% SBERT —
+> meaning TF-IDF contributed nothing. Mixing inferior signals does not
+> improve results; it introduces noise.
 
 ---
 
 ## What Would Actually Help
 
 ```
-Option 1 — Fine-tuning SBERT
-25 labeled pairs pe train karo
-"HR Onboarding" vs "Client Onboarding" alag hain — model ko sikhao
-Zyada data chahiye hoga — 25 pairs kam hain
+Option 1 — Fine-tune SBERT on domain-specific data
+           Train on labeled business document pairs
+           Requires 500+ labeled pairs minimum
 
 Option 2 — Cross-encoder model
-Bi-encoder (current SBERT) → fast but less accurate
-Cross-encoder → dono documents saath process karta hai → more accurate
-Slower but better at understanding business context
+           Processes both documents together (more context-aware)
+           Slower but significantly more accurate
 
-Option 3 — LLM-based reasoning (Layer 6)
-GPT/Llama se poochho — "Are these two documents similar?"
-Context + reasoning → most accurate
-But expensive aur slow
+Option 3 — LLM-based reasoning
+           Ask GPT/Llama: "Are these two documents similar?"
+           Most accurate — but expensive and slow at scale
 ```
 
 ---
@@ -167,7 +161,7 @@ But expensive aur slow
 
 | File | Purpose |
 |---|---|
-| `hybrid_similarity.py` | TF-IDF + SBERT + Metadata scoring |
+| `hybrid_similarity.py` | TF-IDF + SBERT + Metadata scoring experiments |
 
 ---
 
@@ -181,6 +175,6 @@ python hybrid_similarity.py
 
 ## Key Lesson
 
-> Simple rule-based hybrid approaches complex document similarity problems
-> handle nahi kar sakte. Real improvement ke liye fine-tuning ya
-> more sophisticated models (cross-encoder, LLM) ki zaroorat hai.
+> Simple rule-based hybrid approaches cannot handle the complexity of
+> enterprise document similarity. Meaningful improvement requires
+> fine-tuning or more sophisticated models (cross-encoder, LLM reasoning).

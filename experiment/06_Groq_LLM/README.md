@@ -1,7 +1,7 @@
 # Experiment 06 — Groq LLM + SBERT RAG Pipeline (Layer 6)
 
 **Status:** Complete
-**Result:** RAG pipeline working — SBERT finds relevant docs, Groq gives accurate answers
+**Result:** RAG pipeline working — SBERT retrieves relevant documents, Groq generates accurate answers
 
 ---
 
@@ -10,22 +10,22 @@
 **RAG = Retrieval Augmented Generation**
 
 ```
-R → Retrieval   = SBERT ne relevant documents dhundhe
-A → Augmented   = un documents ka context LLM ko diya
-G → Generation  = Groq ne intelligent answer generate kiya
+R → Retrieval   = SBERT finds the most relevant documents
+A → Augmented   = those documents are passed as context to the LLM
+G → Generation  = Groq generates an answer grounded in that context
 ```
 
 Without RAG:
 ```
-User: "What are expense limits?"
-LLM:  "I don't know NovaBridge's specific limits" ❌
+User: "What are NovaBridge's expense reimbursement limits?"
+LLM:  "I don't have access to NovaBridge's internal policies." ❌
 ```
 
 With RAG:
 ```
-User:  "What are expense limits?"
-SBERT: finds FIN-001, FIN-005, FIN-007
-Groq:  reads those docs → accurate answer ✅
+User:  "What are the expense reimbursement limits?"
+SBERT: retrieves FIN-001, FIN-005, FIN-007
+Groq:  reads those documents → accurate, specific answer ✅
 ```
 
 ---
@@ -35,24 +35,27 @@ Groq:  reads those docs → accurate answer ✅
 ```
 User Question
       ↓
-SentenceTransformer ("all-MiniLM-L6-v2")
-      ↓ (query vector — 384 dims)
-Cosine Similarity vs 30 document embeddings
-      ↓ (top 3 most similar docs)
+SentenceTransformer (all-MiniLM-L6-v2)
+      ↓  query vector — 384 dimensions
+ChromaDB vector search (top 3 most similar documents)
+      ↓  retrieved document text
 Groq API (llama-3.3-70b-versatile)
-      ↓ (reads doc context + question)
-Accurate Answer ✅
+      ↓  reads document context + user question
+Accurate Answer + Source Citations
 ```
+
+**Note:** This experiment used direct SBERT cosine similarity.
+The production app uses ChromaDB for persistent storage and faster lookup.
 
 ---
 
-## Model Used
+## Model
 
 ```
 Groq API → llama-3.3-70b-versatile
          → 70 billion parameters
-         → fast inference (Groq hardware)
-         → free tier available
+         → fast inference via Groq's custom hardware
+         → free tier available at console.groq.com
 ```
 
 ---
@@ -64,25 +67,25 @@ Groq API → llama-3.3-70b-versatile
 ```
 Query: "What are the expense reimbursement limits?"
 
-Found docs:
-→ FIN-001 Expense Reimbursement Policy      (v1.0)
+Retrieved:
+→ FIN-001 Expense Reimbursement Policy (v1.0)
 → FIN-005 Expense Reimbursement Policy v2.0
 → FIN-007 Travel and Entertainment Policy
 
-Groq Answer:
-FIN-001 (v1.0) limits:
+Answer:
+FIN-001 (v1.0):
 - Meals & Entertainment: INR 1,500 / GBP 40
 - Local Travel: INR 800 / GBP 25
 - Accommodation: INR 6,000/night / GBP 150/night
 
-FIN-005 (v2.0) updated limits (effective July 2026):
+FIN-005 (v2.0, effective July 2026):
 - Meals & Entertainment: INR 2,000/day (+33%)
 - Local Travel: INR 1,200/day (+50%)
 - Accommodation: INR 7,500/night (+25%)
 - Communication: INR 750/month (+50%)
 ```
 
-**Groq ne dono versions compare karke bataya!** ✅
+Groq automatically compared both versions and highlighted the differences.
 
 ---
 
@@ -91,19 +94,19 @@ FIN-005 (v2.0) updated limits (effective July 2026):
 ```
 Query: "How to handle a P1 incident?"
 
-Found docs:
+Retrieved:
 → ENG-002 Incident Response Procedure
 → ENG-008 Disaster Recovery Plan
 → OPS-002 Escalation Matrix
 
-Groq Answer:
-1. Detection & Alerting → PagerDuty alert, acknowledge in 5 min
-2. Triage & Escalation  → notify Engineering Manager + VP Engineering
-3. Mitigation           → isolate, fix/rollback, update #incidents every 15 min
-4. Resolution & Review  → close ticket, post-mortem within 48 hours
+Answer:
+1. Detection & Alerting  → PagerDuty alert; acknowledge within 5 minutes
+2. Triage & Escalation   → notify Engineering Manager and VP Engineering immediately
+3. Mitigation            → isolate, apply fix or rollback; post updates every 15 minutes
+4. Resolution & Review   → close ticket; blameless post-mortem within 48 hours
 ```
 
-**Groq ne 3 documents combine karke complete answer diya!** ✅
+Groq synthesised information from 3 separate documents into a single structured answer.
 
 ---
 
@@ -112,80 +115,85 @@ Groq Answer:
 ```
 Query: "What is the remote work policy?"
 
-Found docs:
+Retrieved:
 → HR-003 Remote Work Policy (Global)
 → HR-006 US Remote Work Policy
 
-Groq Answer:
+Answer:
 Global policy (HR-003):
-- 90-day probation required
-- VPN mandatory
-- Core hours 10:00-16:00
+- 90-day probation required before eligibility
+- VPN mandatory for all remote work
+- Core hours: 10:00–16:00 local time
 
-US-specific (HR-006):
-- Cross-state work needs Finance + HR approval
-- California: full expense reimbursement required (CA Labor Code)
+US-specific additions (HR-006):
+- Cross-state remote work requires Finance + HR written approval
+- California employees: full business expense reimbursement (CA Labor Code 2802)
+- ADA accommodation: route through HR only, not line manager
 ```
 
 ---
 
 ## Key Findings
 
-### What Worked Well
-```
-✅ SBERT correctly found relevant documents for all queries
-✅ Groq gave accurate, structured answers
-✅ Version comparison — FIN-001 vs FIN-005 automatically handled
-✅ Multi-document synthesis — combined 3 docs for P1 answer
-✅ No hallucination — answers based only on provided context
-```
+### What Worked
+
+- SBERT retrieved the correct documents for every test query
+- Groq produced accurate, structured answers grounded in document content
+- Multi-document synthesis: P1 incident answer drew from 3 separate sources
+- Version comparison: expense limits from FIN-001 and FIN-005 compared automatically
+- No hallucination: answers stayed within the provided document context
 
 ### What Failed Initially
-```
-❌ text[:500] → table data cut off → expense limits missing
 
-Fix:
-✅ text[:1500] → full table data included → accurate limits!
 ```
+text[:500]  → table data was cut off → expense limits were missing from context
+text[:1500] → full table content included → accurate limits returned
+```
+
+**Lesson:** Context window size directly affects answer quality. More context = better answers, but at higher token cost.
 
 ---
 
-## Important Lesson — Context Window
+## Context Window Tradeoff
 
-```
-text[:500]  → fast but misses tables ❌
-text[:1500] → slightly slower but complete data ✅
-text[:5000] → most complete but expensive (more tokens)
-```
+| Context Size | Speed | Table Data | Token Cost |
+|---|---|---|---|
+| text[:500] | Fast | Missing | Low |
+| text[:1500] | Moderate | Complete | Moderate |
+| text[:5000] | Slow | Complete | High |
 
-**Balance: 1500 chars per document = sweet spot for our use case**
+**Chosen for production: 1500 characters per document** — balances completeness and cost.
 
 ---
 
-## My Observation
+## Observation
 
-> Maine Groq + SBERT RAG pipeline try kiya aur observe kiya ki
-> SBERT sahi se relevant documents nikal raha hai aur Groq un
-> documents se accurate answer de raha hai.
+> SBERT retrieves the right documents. Groq generates accurate answers
+> from those documents. The combination works well for enterprise Q&A.
 >
-> Groq ne automatically version comparison bhi kiya —
-> FIN-001 (v1.0) aur FIN-005 (v2.0) dono ke limits compare karke bataye.
+> The most important engineering decision in this pipeline is context size.
+> At 500 characters, structured data (tables, lists) was frequently cut off
+> and Groq could not answer questions about specific limits or thresholds.
+> At 1500 characters, all critical content was included.
 >
-> Ek important learning: text truncation se table data miss hoti thi.
-> Context size 500 se 1500 karne par accurate answers aane lage.
+> This is a production concern that does not appear in toy demos:
+> real enterprise documents store important information in tables,
+> not in prose paragraphs.
 
 ---
 
-## Security Note
+## Security
 
 ```
-API key NEVER hardcode karo code mein!
+API keys must never be hardcoded in source code.
 
-✅ .env file mein rakho
-✅ .gitignore mein .env add karo
-✅ os.getenv("GROQ_API_KEY") se load karo
+Correct approach:
+- Store in .env file (excluded from git via .gitignore)
+- Load at runtime: os.getenv("GROQ_API_KEY")
+- Set as environment variable in the hosting platform dashboard
 
-Reason: GitHub pe push hone se API key public ho jaati hai!
+A leaked API key in a public GitHub repo can be scraped by
+automated bots within minutes.
 ```
 
 ---
@@ -194,7 +202,7 @@ Reason: GitHub pe push hone se API key public ho jaati hai!
 
 | File | Purpose |
 |---|---|
-| `llm_query.py` | SBERT + Groq RAG pipeline |
+| `llm_query.py` | SBERT + Groq RAG pipeline experiment |
 
 ---
 
@@ -203,7 +211,7 @@ Reason: GitHub pe push hone se API key public ho jaati hai!
 ```bash
 pip install groq sentence-transformers python-dotenv
 
-# .env file banao
+# Create .env file
 echo GROQ_API_KEY=your_key_here > .env
 
 python llm_query.py
@@ -211,22 +219,13 @@ python llm_query.py
 
 ---
 
-## All 6 Layers — Complete!
+## All 6 Layers — Complete
 
-```
-Layer 1 ✅ → Text Extraction      (python-docx)
-Layer 2 ✅ → Classification       (TF-IDF + XGBoost)
-Layer 3 ✅ → NER                  (spaCy EntityRuler)
-Layer 4 ✅ → Similarity Search    (SBERT + Cosine)
-Layer 5 ❌ → Hybrid Search        (proved less effective than Layer 4)
-Layer 6 ✅ → LLM Reasoning        (Groq + Llama 3.3)
-```
-
-## Next Step — FastAPI App
-
-Integrate all layers into a production FastAPI backend:
-```
-POST /search  → Layer 4 + Layer 6
-POST /classify → Layer 2
-POST /extract  → Layer 3
-```
+| Layer | Technology | Status |
+|---|---|---|
+| Layer 1 | Text Extraction (python-docx) | Complete |
+| Layer 2 | Classification (TF-IDF + XGBoost) | Complete |
+| Layer 3 | NER (spaCy EntityRuler) | Complete |
+| Layer 4 | Similarity Search (SBERT + ChromaDB) | Complete |
+| Layer 5 | Hybrid Search | Abandoned — performed worse than Layer 4 alone |
+| Layer 6 | LLM Reasoning (Groq + LLaMA 3.3 70B) | Complete |
