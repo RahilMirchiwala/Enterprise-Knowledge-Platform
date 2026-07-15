@@ -1,10 +1,5 @@
 # Enterprise Knowledge Intelligence Platform
 
-> **Live Demo:** [enterprise-knowledge-platform.onrender.com/ui](https://enterprise-knowledge-platform.onrender.com/ui)  
-> **API Docs:** [enterprise-knowledge-platform.onrender.com/docs](https://enterprise-knowledge-platform.onrender.com/docs)
-
----
-
 ## Case Study: NovaBridge Document Intelligence
 
 ### The Business Problem
