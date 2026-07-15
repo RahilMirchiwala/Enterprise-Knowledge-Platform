@@ -1,5 +1,63 @@
 # Enterprise Knowledge Intelligence Platform
 
+=======
+> 🎥 Demo Video: Coming Soon
+
+> Run Locally:
+> http://localhost:8000/ui
+
+> API Docs:
+> http://localhost:8000/docs
+
+## 🏗️ System Architecture
+
+<p align="center">
+  <img src="Architecture.png" alt="Enterprise Knowledge Intelligence Platform Architecture" width="100%">
+</p>
+
+# 📸 Screenshots
+
+## 🏠 Home Page
+
+<p align="center">
+  <img src="screenshots/Home.png" alt="Home Page" width="900">
+</p>
+
+---
+
+## 🤖 AI Question Answering
+
+<p align="center">
+  <img src="screenshots/ask_ai.png" alt="Ask AI" width="900">
+</p>
+
+---
+
+## 🔍 Semantic Search
+
+<p align="center">
+  <img src="screenshots/search.png" alt="Semantic Search" width="900">
+</p>
+
+---
+
+## 📄 Duplicate Detection
+
+<p align="center">
+  <img src="screenshots/duplicates.png" alt="Duplicate Detection" width="900">
+</p>
+
+---
+
+## ⚙️ FastAPI API Documentation
+
+<p align="center">
+  <img src="screenshots/api_docs.png" alt="FastAPI API Documentation" width="900">
+</p>
+
+---
+
+>>>>>>> 41f1ef7 (Add architecture image and README screenshots)
 ## Case Study: NovaBridge Document Intelligence
 
 ### The Business Problem
