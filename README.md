@@ -57,7 +57,6 @@
 
 ---
 
->>>>>>> 41f1ef7 (Add architecture image and README screenshots)
 ## Case Study: NovaBridge Document Intelligence
 
 ### The Business Problem
